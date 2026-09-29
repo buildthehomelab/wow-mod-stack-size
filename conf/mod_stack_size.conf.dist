@@ -33,19 +33,19 @@ StackSize.TradeGoods = 999
 #    StackSize.Reagents
 #        Description: Max stack for spell reagents (Rune of Portals, Symbol of Kings,
 #                     Ankh, Wild Thornroot...).
-#        Default:     0 (unchanged)
+#        Default:     200
 #
 
-StackSize.Reagents = 0
+StackSize.Reagents = 200
 
 #
 #    StackSize.Consumables
 #        Description: Max stack for consumables: food, drink, potions, elixirs, flasks, scrolls,
 #                     bandages, weapon oils and stones.
-#        Default:     0 (unchanged)
+#        Default:     200
 #
 
-StackSize.Consumables = 0
+StackSize.Consumables = 200
 
 #
 #    StackSize.Gems

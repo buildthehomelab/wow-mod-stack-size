@@ -49,8 +49,8 @@ namespace
     constexpr ClassRule ClassRules[] =
     {
         { "StackSize.TradeGoods",  ITEM_CLASS_TRADE_GOODS, 999 },
-        { "StackSize.Reagents",    ITEM_CLASS_REAGENT,     0 },
-        { "StackSize.Consumables", ITEM_CLASS_CONSUMABLE,  0 },
+        { "StackSize.Reagents",    ITEM_CLASS_REAGENT,     200 },
+        { "StackSize.Consumables", ITEM_CLASS_CONSUMABLE,  200 },
         { "StackSize.Gems",        ITEM_CLASS_GEM,         0 },
         { "StackSize.Projectiles", ITEM_CLASS_PROJECTILE,  0 },
         { "StackSize.Glyphs",      ITEM_CLASS_GLYPH,       0 },
