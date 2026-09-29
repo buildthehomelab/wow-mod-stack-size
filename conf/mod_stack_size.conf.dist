@@ -1,0 +1,121 @@
+[worldserver]
+
+########################################
+# mod-stack-size
+#
+# Raises how many of an item fit in one stack. Stack sizes are set once at startup, so a change
+# here needs a worldserver restart (.reload config won't pick it up). The database isn't changed:
+# set StackSize.Enable = 0 and restart to get the stock sizes back.
+#
+# The per-class options below only ever RAISE a stack, and only for items that already stack.
+# Items that don't stack (a stack size of 1) stay that way, and an item that already stacks higher
+# than the value is left alone. 0 means "leave this class alone".
+########################################
+
+#
+#    StackSize.Enable
+#        Description: Master switch.
+#        Default:     1
+#
+
+StackSize.Enable = 1
+
+#
+#    StackSize.TradeGoods
+#        Description: Max stack for trade goods: cloth, leather, ore, bars, herbs, meat, elemental
+#                     items, enchanting materials, parts and so on.
+#        Default:     999
+#
+
+StackSize.TradeGoods = 999
+
+#
+#    StackSize.Reagents
+#        Description: Max stack for spell reagents (Rune of Portals, Symbol of Kings,
+#                     Ankh, Wild Thornroot...).
+#        Default:     0 (unchanged)
+#
+
+StackSize.Reagents = 0
+
+#
+#    StackSize.Consumables
+#        Description: Max stack for consumables: food, drink, potions, elixirs, flasks, scrolls,
+#                     bandages, weapon oils and stones.
+#        Default:     0 (unchanged)
+#
+
+StackSize.Consumables = 0
+
+#
+#    StackSize.Gems
+#        Description: Max stack for cut and uncut gems that already stack.
+#        Default:     0 (unchanged)
+#
+
+StackSize.Gems = 0
+
+#
+#    StackSize.Projectiles
+#        Description: Max stack for arrows and bullets (stock is 200 in 3.3.5a).
+#        Default:     0 (unchanged)
+#
+
+StackSize.Projectiles = 0
+
+#
+#    StackSize.Glyphs
+#        Description: Max stack for glyphs.
+#        Default:     0 (unchanged)
+#
+
+StackSize.Glyphs = 0
+
+#
+#    StackSize.Quest
+#        Description: Max stack for quest items that already stack. Quest objectives still only
+#                     count what the quest asks for.
+#        Default:     0 (unchanged)
+#
+
+StackSize.Quest = 0
+
+#
+#    StackSize.Misc
+#        Description: Max stack for miscellaneous items (junk, holiday items, and similar).
+#        Default:     0 (unchanged)
+#
+
+StackSize.Misc = 0
+
+#
+#    StackSize.Items
+#        Description: Per-item stack sizes, as item:size pairs separated by spaces or commas.
+#                     These win over the class options, can lower a stack, and can make an item
+#                     stack that normally doesn't.
+#        Example:     StackSize.Items = "6265:20 21877:500"
+#        Default:     ""
+#
+
+StackSize.Items = ""
+
+#
+#    StackSize.Exclude
+#        Description: Item entries the class options never touch, separated by spaces or commas.
+#        Example:     StackSize.Exclude = "6948 23572"
+#        Default:     ""
+#
+
+StackSize.Exclude = ""
+
+#
+#    StackSize.ResetClientCache
+#        Description: The client remembers item data in its Cache folder and would keep showing
+#                     the old stack sizes. With 1, the server sends a different client cache
+#                     version whenever the changed stacks differ, so each client clears its cache
+#                     once on its next login. The version comes from the settings, so the same
+#                     config doesn't clear the cache again after a restart.
+#        Default:     1
+#
+
+StackSize.ResetClientCache = 1
