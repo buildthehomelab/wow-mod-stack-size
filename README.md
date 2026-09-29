@@ -1,8 +1,9 @@
 # mod-stack-size
 
 An AzerothCore module that raises item stack sizes from the config file. By default, trade goods
-(cloth, leather, ore, bars, herbs, meat, elemental items, enchanting materials) stack to **999**.
-Other item classes and single items can be set too.
+(cloth, leather, ore, bars, herbs, meat, elemental items, enchanting materials) stack to **999**,
+and reagents and consumables (food, drink, potions, flasks, scrolls, bandages) to **200**. Other
+item classes and single items can be set too.
 
 ## How it works
 
@@ -43,8 +44,8 @@ Re-run CMake, rebuild, and copy `mod_stack_size.conf.dist` to `mod_stack_size.co
 | --- | --- | --- |
 | `StackSize.Enable` | 1 | Master switch |
 | `StackSize.TradeGoods` | 999 | Trade goods |
-| `StackSize.Reagents` | 0 | Spell reagents |
-| `StackSize.Consumables` | 0 | Food, drink, potions, flasks, scrolls, bandages |
+| `StackSize.Reagents` | 200 | Spell reagents |
+| `StackSize.Consumables` | 200 | Food, drink, potions, flasks, scrolls, bandages |
 | `StackSize.Gems` | 0 | Gems that already stack |
 | `StackSize.Projectiles` | 0 | Arrows and bullets |
 | `StackSize.Glyphs` | 0 | Glyphs |
