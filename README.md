@@ -28,6 +28,12 @@ the changed stacks. Each client then clears its cache once on its next login. Th
 give the same version, so restarts don't clear the cache again. Changing the settings, or turning
 the module off, clears it once more.
 
+## Requirements
+
+- An [AzerothCore](https://github.com/azerothcore/azerothcore-wotlk) WotLK (master) server. The
+  module has no other module or core-fork dependencies.
+- A WoW 3.3.5a (12340) client. No client patch or addon is needed.
+
 ## Install
 
 ```bash
@@ -65,6 +71,22 @@ Re-run CMake, rebuild, and copy `mod_stack_size.conf.dist` to `mod_stack_size.co
   the auction house, and playerbots guild tasks. Playerbots guild tasks ask for "one full stack" of
   some items, so with them enabled a task could ask for up to 999.
 
+## Troubleshooting
+
+- **Stacks didn't change**: the settings are read at startup, so restart the worldserver after
+  editing `mod_stack_size.conf`, and check `StackSize.Enable = 1`.
+- **Players still see the old stack sizes**: the client caches item data. Keep
+  `StackSize.ResetClientCache = 1` so clients clear it on their next login, or delete the
+  client's `Cache/WDB` folder.
+- **An item didn't get a bigger stack**: the class options only raise items that already stack.
+  Give a single item a size with `StackSize.Items`, e.g. `"6265:20"`.
+- **The module builds but never runs**: the folder isn't named `mod-stack-size`, so AzerothCore
+  never calls the loader.
+
+## Credits
+
+Author: [buildthehomelab](https://github.com/buildthehomelab)
+
 ## License
 
-MIT
+MIT, see [LICENSE](LICENSE).
