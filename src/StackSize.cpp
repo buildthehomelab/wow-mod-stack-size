@@ -171,11 +171,16 @@ namespace
                 continue;
 
             proto->Stackable = int32(size);
-            if (raiseCap)
-                proto->MaxCount = int32(size);
-
             Mix(hash, proto->ItemId);
             Mix(hash, size);
+
+            // Mixed in only when raised, so items without a cap change keep their old hash.
+            if (raiseCap)
+            {
+                proto->MaxCount = int32(size);
+                Mix(hash, uint32(proto->MaxCount));
+            }
+
             ++changed;
         }
 
