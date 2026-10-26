@@ -12,7 +12,8 @@
  *
  * Class rules only ever raise a stack, and only for items that already stack: an item that doesn't
  * stack (stackable 1) stays that way, and an item that already stacks higher is left alone.
- * StackSize.Items overrides single items and can set any size.
+ * StackSize.Items overrides single items and can set any size. If such an item has a lower carry
+ * limit (item_template.maxcount, "Unique (N)"), the limit is raised to the stack size as well.
  *
  * The client keeps item data in its Cache folder and would keep showing the old sizes. With
  * StackSize.ResetClientCache the server sends a different client cache version whenever the set of
@@ -160,12 +161,26 @@ namespace
                 continue;
 
             uint32 const size = WantedSize(*proto);
-            if (!size || uint32(proto->Stackable) == size)
+            if (!size)
+                continue;
+
+            // An item named in StackSize.Items with a lower carry limit (Soul Shard: Unique (32))
+            // could never fill its new stack, so the limit goes up to the stack size too.
+            bool const raiseCap = config.itemSizes.count(proto->ItemId) && proto->MaxCount > 0 && uint32(proto->MaxCount) < size;
+            if (uint32(proto->Stackable) == size && !raiseCap)
                 continue;
 
             proto->Stackable = int32(size);
             Mix(hash, proto->ItemId);
             Mix(hash, size);
+
+            // Mixed in only when raised, so items without a cap change keep their old hash.
+            if (raiseCap)
+            {
+                proto->MaxCount = int32(size);
+                Mix(hash, uint32(proto->MaxCount));
+            }
+
             ++changed;
         }
 

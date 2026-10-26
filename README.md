@@ -18,6 +18,11 @@ loaded items in memory. It never writes to the database. To get the stock sizes 
 - Class options (`StackSize.TradeGoods`, `StackSize.Reagents`, ...) only **raise** stacks, and only
   for items that already stack. An item that doesn't stack stays that way.
 - `StackSize.Items` sets single items to any size, including lower sizes or making an item stack.
+  If the item also has a lower carry limit ("Unique (N)", like Soul Shard's 32), the limit is
+  raised to the stack size, so `"6265:999"` lets a warlock carry 999 shards.
+  Going back is lossy: a player holding more than the stock limit can't log in with it (the
+  core mails the stack, and it can't be taken out of the mail). Cut those stacks down first,
+  e.g. `UPDATE item_instance SET count = 32 WHERE itemEntry = 6265 AND count > 32;`.
 - `StackSize.Exclude` keeps items out of the class options.
 
 ### Client cache

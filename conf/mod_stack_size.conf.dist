@@ -92,7 +92,8 @@ StackSize.Misc = 0
 #    StackSize.Items
 #        Description: Per-item stack sizes, as item:size pairs separated by spaces or commas.
 #                     These win over the class options, can lower a stack, and can make an item
-#                     stack that normally doesn't.
+#                     stack that normally doesn't. An item that can only be carried in a lower
+#                     number ("Unique (32)" on Soul Shard) can be carried up to the stack size.
 #        Example:     StackSize.Items = "6265:20 21877:500"
 #        Default:     ""
 #
