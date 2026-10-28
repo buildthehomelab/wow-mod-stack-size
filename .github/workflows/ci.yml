@@ -21,3 +21,50 @@ jobs:
 #   with:
 #     module: mod-foo          # only if the server folder isn't the repo name minus "wow-"
 #     lua-exclude: "Astrolabe/**"
+
+  unit-tests:
+    name: Unit tests (${{ matrix.compiler }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [g++, clang++]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Execute production module with sanitizers
+        env:
+          CXX: ${{ matrix.compiler }}
+          CXXFLAGS: -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer
+        run: python3 tests/run.py
+      - name: Reject representative behavioral regressions
+        env:
+          CXX: ${{ matrix.compiler }}
+        run: python3 tests/mutations.py
+
+  unit-coverage:
+    name: Unit coverage
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Instrument and execute production module
+        env:
+          CXX: g++
+          CXXFLAGS: --coverage -O0 -g
+          BUILD_DIR: ${{ runner.temp }}/stack-size-coverage
+        run: python3 tests/run.py
+      - name: Enforce source coverage
+        run: |
+          pipx run --spec gcovr==8.4 gcovr \
+            --root . --filter 'src/' \
+            --exclude-throw-branches --exclude-unreachable-branches \
+            --fail-under-line 100 --fail-under-function 100 --fail-under-branch 98 \
+            --print-summary --json-summary coverage.json \
+            "${{ runner.temp }}/stack-size-coverage"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-coverage
+          path: coverage.json
+          if-no-files-found: warn
