@@ -76,6 +76,41 @@ Re-run CMake, rebuild, and copy `mod_stack_size.conf.dist` to `mod_stack_size.co
   the auction house, and playerbots guild tasks. Playerbots guild tasks ask for "one full stack" of
   some items, so with them enabled a task could ask for up to 999.
 
+## Unit tests and regression gates
+
+Run `python3 tests/run.py` with Python 3 and a C++20 compiler (`CXX=g++` or
+`CXX=clang++`). No running server, database or game client is needed. The tests
+compile the actual `src/StackSize.cpp` and all other production `.cpp` files,
+including the module loader. Small test doubles
+replace external core services; they do not implement the stack-size policy.
+
+Coverage includes class defaults and limits, per-item overrides, exclusions,
+malformed entries, unique carry-limit changes, cache-version stability,
+configuration reload behavior and script registration. The carry-limit boundary
+cases began as a local-worker draft; its fixtures and assertions were corrected
+and independently checked before acceptance.
+
+`python3 tests/mutations.py` injects 19 representative faults into temporary copies
+of the production source. Each must compile and fail a behavioral assertion. Hook dispatch respects the
+script's registered hook set, and sanitizer findings terminate the test process.
+Compiler errors do not count as caught regressions. No tracked source is modified.
+The mutation anchors intentionally need updating when the corresponding source
+statements change.
+
+PR CI runs GCC and Clang tests with address/undefined-behavior sanitizers,
+mutation sentinels, and source coverage. It requires 100% executable line and
+function coverage and at least 98% branch coverage after excluding compiler
+exception/unreachable edges. Remaining edges in the current GCC report are
+allocator cleanup paths on script construction, not untested stack-size decisions.
+Coverage applies only to this module's two production `.cpp` files, not the core
+or the rest of Evermore. It does not establish database, client-cache or gameplay
+integration correctness. The shared core-header syntax check remains a separate
+job; full linked server builds and in-game validation are additional checks.
+
+For a local coverage report, set `CXXFLAGS='--coverage -O0 -g'` and `BUILD_DIR` to a
+build directory outside the repository, run `tests/run.py`, then run gcovr with
+`--filter 'src/' --exclude-throw-branches --exclude-unreachable-branches`.
+
 ## Troubleshooting
 
 - **Stacks didn't change**: the settings are read at startup, so restart the worldserver after
