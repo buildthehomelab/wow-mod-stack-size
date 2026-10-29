@@ -58,6 +58,19 @@ namespace
         }
     };
 
+    void CoreHookContract()
+    {
+        auto* previous = WorldScript::registered;
+        WorldScript all("all", {});
+        Check(all.HasHook(WORLDHOOK_ON_AFTER_CONFIG_LOAD)
+              && all.HasHook(WORLDHOOK_ON_BEFORE_WORLD_INITIALIZED)
+              && all.HasHook(WORLDHOOK_ON_BEFORE_FINALIZE_PLAYER_WORLD_SESSION),
+              "empty world hook list enables all hooks");
+        WorldScript selected("selected", {WORLDHOOK_ON_AFTER_CONFIG_LOAD});
+        Check(!selected.HasHook(WORLDHOOK_ON_BEFORE_WORLD_INITIALIZED), "nonempty hook list filters hooks");
+        WorldScript::registered = previous;
+    }
+
     void DefaultClassRules()
     {
         Fixture f;
@@ -269,6 +282,7 @@ int main()
 {
     try
     {
+        CoreHookContract();
         DefaultClassRules();
         SwitchesAndClassOptions();
         PerItemAndCarryLimits();

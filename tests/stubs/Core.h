@@ -133,7 +133,7 @@ public:
             throw std::runtime_error("Injected registration failure");
         registered = this;
     }
-    bool HasHook(WorldHook hook) const { return std::find(hooks.begin(), hooks.end(), hook) != hooks.end(); }
+    bool HasHook(WorldHook hook) const { return hooks.empty() || std::find(hooks.begin(), hooks.end(), hook) != hooks.end(); }
     virtual ~WorldScript() = default;
     virtual void OnAfterConfigLoad(bool) { }
     virtual void OnBeforeWorldInitialized() { }
